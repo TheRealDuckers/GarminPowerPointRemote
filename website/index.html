@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PPT Remote: control PowerPoint from your Garmin watch</title>
+  <meta name="description" content="A friendly, step-by-step guide to using a Garmin Venu Sq 2 Music as a PowerPoint remote control.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to the instructions</a>
+
+  <header class="hero">
+    <div class="wrap">
+      <h1>Change your slides from your wrist</h1>
+      <p>PPT Remote turns a <strong>Garmin Venu Sq 2 Music</strong> into a remote control for PowerPoint on your Windows PC. This page walks you through setting it up, one small step at a time. No experience needed.</p>
+      <a class="button" href="https://github.com/TheRealDuckers/GarminPowerPointRemote/releases/latest">Go to the downloads</a>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+
+    <nav class="toc" aria-label="Contents">
+      <h2>What’s on this page</h2>
+      <ol>
+        <li><a href="#need">What you need</a></li>
+        <li><a href="#download">Step 1: Download the two files</a></li>
+        <li><a href="#pc">Step 2: Set up the app on your PC</a></li>
+        <li><a href="#watch">Step 3: Put the app on your watch</a></li>
+        <li><a href="#pin">Step 4: Type the PIN on your watch</a></li>
+        <li><a href="#use">Step 5: Use it</a></li>
+        <li><a href="#every-time">Every time after that</a></li>
+        <li><a href="#help">Something’s not working?</a></li>
+        <li><a href="#privacy">Is this safe?</a></li>
+        <li><a href="#remove">How to remove it</a></li>
+      </ol>
+    </nav>
+
+    <section id="need">
+      <h2>What you need</h2>
+      <p>Tick these off before you start. It only takes a minute.</p>
+      <ul>
+        <li><strong>A Garmin Venu Sq 2 Music</strong> (the one with “Music” in the name). The plain Venu Sq 2 is <em>not</em> supported.</li>
+        <li><strong>A Windows PC</strong> with Windows 10 (version 2004 or newer) or Windows 11. Almost any PC from the last few years is fine.</li>
+        <li><strong>Bluetooth on your PC.</strong> Most laptops have it built in. If you have a desktop, you may need a small USB Bluetooth adapter.</li>
+        <li><strong>The USB charging cable</strong> that came with your watch. We use it once to copy a file onto the watch.</li>
+        <li>PowerPoint, or any program where the arrow keys change slides (Google Slides in a web browser works too).</li>
+      </ul>
+      <div class="callout tip">
+        <p><strong>Good to know:</strong> you don’t need an internet connection while presenting, an account, or the Garmin Connect app on your phone. The watch and the PC talk to each other directly over Bluetooth.</p>
+      </div>
+    </section>
+
+    <section id="download">
+      <h2><span class="badge" aria-hidden="true">1</span>Download the two files</h2>
+      <p>You need two files: one for your PC and one for your watch.</p>
+      <ol class="steps">
+        <li>Open the <a href="https://github.com/TheRealDuckers/GarminPowerPointRemote/releases/latest">downloads page</a>.</li>
+        <li>Scroll down to the part called <strong>Assets</strong>. You may need to click the little arrow to open it.</li>
+        <li>Click <span class="file">PptRemote-Windows-win-x64.zip</span> to download the PC app.
+          <details>
+            <summary>My PC isn’t sure which one to pick</summary>
+            <div>
+              <p>Most PCs need <span class="file">win-x64</span>. Only a few newer laptops with “ARM” processors (some Surface and Snapdragon laptops) need <span class="file">win-arm64</span>.</p>
+              <p>To check: open <strong>Settings</strong>, then <strong>System</strong>, then <strong>About</strong>. Look at <strong>System type</strong>. If it says “x64-based processor”, pick <span class="file">win-x64</span>. If it says “ARM-based processor”, pick <span class="file">win-arm64</span>.</p>
+            </div>
+          </details>
+        </li>
+        <li>Click <span class="file">PptRemote.prg</span> to download the watch app.</li>
+        <li>Both files usually land in your <strong>Downloads</strong> folder.</li>
+      </ol>
+      <div class="callout warn">
+        <p><strong>Your browser might say the file “isn’t commonly downloaded”.</strong> That’s normal for new, small programs. Choose <strong>Keep</strong> (in Edge: click the three dots, then <strong>Keep</strong>, then <strong>Keep anyway</strong>).</p>
+      </div>
+    </section>
+
+    <section id="pc">
+      <h2><span class="badge" aria-hidden="true">2</span>Set up the app on your PC</h2>
+      <h3>Unzip it</h3>
+      <ol class="steps">
+        <li>Open your <strong>Downloads</strong> folder.</li>
+        <li><strong>Right-click</strong> the zip file you downloaded, then choose <strong>Extract All…</strong>, then click <strong>Extract</strong>.</li>
+        <li>A new folder opens. <strong>Move this folder somewhere you’ll remember</strong>, such as your Documents folder. Don’t leave it inside the zip file, because the app won’t work from there.</li>
+      </ol>
+
+      <h3>Turn on Bluetooth</h3>
+      <ol class="steps">
+        <li>Open <strong>Settings</strong> and go to <strong>Bluetooth &amp; devices</strong>.</li>
+        <li>Make sure the Bluetooth switch at the top says <strong>On</strong>.</li>
+        <li>You do <strong>not</strong> need to pair your watch here. Please don’t. The app handles the connection by itself.</li>
+      </ol>
+
+      <h3>Start the app</h3>
+      <ol class="steps">
+        <li>In the folder, <strong>double-click</strong> <span class="file">PptRemoteServer.exe</span>.</li>
+        <li>You may see a blue window that says <strong>“Windows protected your PC”</strong>. Don’t worry. Click the words <strong>More info</strong>, then click the <strong>Run anyway</strong> button that appears.
+          <div class="callout tip">
+            <p><strong>Why does Windows say that?</strong> Windows gets cautious about any program it hasn’t seen many times before, especially if the creator hasn’t paid for a digital signature. It doesn’t mean there is anything wrong with the app. You only need to do this the first time.</p>
+          </div>
+        </li>
+        <li>A window called <strong>PPT Remote</strong> opens. The bar at the top should be <span class="dot blue"></span><strong>blue</strong> and say <strong>“Waiting for your watch”</strong>. That means the PC is ready.</li>
+        <li>Under <strong>WATCH PIN</strong> you’ll see a number, such as <code>482 913</code>. <strong>Keep this window visible. You’ll type this number into your watch in Step 4.</strong></li>
+      </ol>
+
+      <div class="callout warn">
+        <p><strong>If the bar at the top is red and says “Bluetooth problem”,</strong> jump to <a href="#help">Something’s not working?</a>.</p>
+      </div>
+
+      <div class="callout tip">
+        <p><strong>If you close the window, the app keeps running.</strong> It tucks itself into the system tray, the row of tiny icons at the bottom-right of your screen near the clock. You might need to click the little <kbd>^</kbd> arrow to see it. Double-click the icon to bring the window back. To quit for real, right-click the icon and choose <strong>Quit</strong>.</p>
+      </div>
+    </section>
+
+    <section id="watch">
+      <h2><span class="badge" aria-hidden="true">3</span>Put the app on your watch</h2>
+      <p>You’ll copy the <span class="file">PptRemote.prg</span> file onto the watch, a bit like copying a photo to a USB stick.</p>
+      <ol class="steps">
+        <li>Plug the <strong>small end</strong> of the watch’s USB cable into the watch, and the <strong>big end</strong> into your PC.</li>
+        <li>Wait about 10 seconds. The watch screen may show a USB symbol. That’s fine.</li>
+        <li>Open <strong>File Explorer</strong> (the yellow folder icon on your taskbar, or press <kbd>Windows</kbd> + <kbd>E</kbd>).</li>
+        <li>On the left, click <strong>This PC</strong>. Your watch should appear as a device with a name like <strong>Venu Sq 2 Music</strong>. Double-click it.</li>
+        <li>You’ll see one or two folders. Open the one called <strong>Internal Storage</strong> or <strong>Primary</strong> if you see it. Then open the folder called <strong>GARMIN</strong>, and inside it the folder called <strong>Apps</strong>.</li>
+        <li>Open your <strong>Downloads</strong> folder in a second File Explorer window, then <strong>drag</strong> <span class="file">PptRemote.prg</span> into the watch’s <strong>Apps</strong> folder. (Or right-click the file, choose <strong>Copy</strong>, then right-click inside the <strong>Apps</strong> folder and choose <strong>Paste</strong>.)</li>
+        <li>Wait for the copy to finish (it takes a second). Then close both windows and <strong>unplug the watch</strong>.</li>
+        <li>The watch may restart or show a short “updating” message. Give it a minute.</li>
+      </ol>
+
+      <h3>Find the app on your watch</h3>
+      <p>Look for <strong>PPT Remote</strong> in your watch’s list of apps. It has a <strong>blue square icon with a white triangle</strong>. Press the button on the watch, or swipe up from the watch face, and scroll until you see it. Tap it to open.</p>
+
+      <div class="callout tip">
+        <p><strong>Can’t find the watch in File Explorer?</strong> Try a different USB port, make sure the cable is pushed in firmly, and check that the watch isn’t in the middle of a workout or update. Some cables only charge and can’t carry files, so if nothing appears, try the cable that came in the box.</p>
+      </div>
+      <div class="callout tip">
+        <p><strong>Can’t find a folder called Apps?</strong> Open the <strong>GARMIN</strong> folder and look again. It is always inside there. If there is genuinely none, ask for help (see the bottom of this page) and mention what folders you can see.</p>
+      </div>
+    </section>
+
+    <section id="pin">
+      <h2><span class="badge" aria-hidden="true">4</span>Type the PIN on your watch</h2>
+      <p>The first time you open <strong>PPT Remote</strong> on the watch, it shows a number pad and asks for the PIN. This stops other people’s devices from changing your slides.</p>
+      <ol class="steps">
+        <li>Look at the PC window and find the number under <strong>WATCH PIN</strong>.</li>
+        <li>On the watch, <strong>tap the digits</strong> to match it. Little dots at the top show how many you’ve typed. Made a mistake? Tap <strong>DEL</strong>.</li>
+        <li>Tap <strong>OK</strong> (it turns green once you’ve typed enough digits).</li>
+        <li>After a moment the watch screen shows a <span class="dot green"></span><strong>green dot</strong> and says <strong>Connected</strong>. On the PC, the top bar turns <span class="dot green"></span><strong>green</strong> and says <strong>“Watch connected”</strong>. 🎉</li>
+      </ol>
+      <div class="callout tip">
+        <p>Once your watch has connected, the PC hides the PIN behind dots so nobody can read it over your shoulder. Click <strong>Show</strong> next to it any time to see it again. The watch remembers the PIN, so you only do this once.</p>
+      </div>
+    </section>
+
+    <section id="use">
+      <h2><span class="badge" aria-hidden="true">5</span>Use it</h2>
+      <ol class="steps">
+        <li>On the PC, open your presentation and start the slideshow (in PowerPoint, press <kbd>F5</kbd>, or use the watch’s <strong>START</strong> button).</li>
+        <li><strong>Click once on the slideshow</strong> so it’s the window you’re looking at. The remote sends key presses to whichever window is “in front”.</li>
+        <li>Tap <strong>NEXT</strong> on the watch, and the slide changes. 🎉</li>
+      </ol>
+
+      <h3>What each button does</h3>
+      <table>
+        <thead><tr><th>On the watch</th><th>What happens</th></tr></thead>
+        <tbody>
+          <tr><td><strong>NEXT</strong> (big blue button, right) or the <strong>physical button</strong> on the side</td><td>Next slide</td></tr>
+          <tr><td><strong>PREV</strong> (big button, left)</td><td>Previous slide</td></tr>
+          <tr><td><strong>START</strong></td><td>Start the slideshow from the beginning, and start a talk timer</td></tr>
+          <tr><td><strong>BLACK</strong></td><td>Turn the screen black (tap again to bring the slides back). Handy when you want everyone to look at you</td></tr>
+          <tr><td><strong>END</strong></td><td>End the slideshow, and clear the talk timer</td></tr>
+          <tr><td>The strip at the very top</td><td>When connected: start or stop the talk timer. When not connected: try again. If it says “Check PIN”: type the PIN again</td></tr>
+        </tbody>
+      </table>
+      <p>The button you press flashes white, and the watch gives a tiny buzz so you know it worked. <strong>One long buzz</strong> means it couldn’t send (usually not connected). <strong>Two buzzes</strong> mean the connection just dropped.</p>
+
+      <h3>Leaving the app</h3>
+      <p>Swipe right on the watch screen <strong>twice</strong>. The first swipe only shows “Swipe again to exit”, so you can’t close it by accident in the middle of a talk.</p>
+    </section>
+
+    <section id="every-time">
+      <h2>Every time after that</h2>
+      <ol class="steps">
+        <li>Start <span class="file">PptRemoteServer.exe</span> on the PC. (Or tick <strong>Start with Windows</strong> in its window and it will start by itself, tucked away in the tray.)</li>
+        <li>Open <strong>PPT Remote</strong> on the watch.</li>
+        <li>Wait for <span class="dot green"></span><strong>Connected</strong>, then present.</li>
+      </ol>
+      <div class="callout tip">
+        <p><strong>Tip for long talks:</strong> your watch screen switches itself off after a while, and that can close the app. Before a big presentation, go to the watch’s settings and make the screen stay on longer (look for <strong>Display</strong>, then <strong>Timeout</strong>).</p>
+      </div>
+    </section>
+
+    <section id="help">
+      <h2>Something’s not working?</h2>
+      <p>Click a problem to see what to do. Start from the top. The first few fix most things.</p>
+
+      <details>
+        <summary>The watch is stuck on “Searching…”</summary>
+        <div>
+          <ol>
+            <li>Is the PPT Remote window open on your PC (or its icon in the tray)? If not, start <span class="file">PptRemoteServer.exe</span>.</li>
+            <li>Does the PC’s top bar say <strong>“Waiting for your watch”</strong>? If it’s red, see “Bluetooth problem” below.</li>
+            <li>Is Bluetooth switched <strong>On</strong> in Windows (Settings, then Bluetooth &amp; devices)?</li>
+            <li>Move the watch closer to the PC (within a couple of metres).</li>
+            <li>Tap the strip at the top of the watch screen where it says <strong>Retry</strong>.</li>
+            <li>If it still won’t connect, quit the app on the watch (swipe right twice) and open it again. Then right-click the PC app’s tray icon, choose <strong>Quit</strong>, and start it again.</li>
+          </ol>
+        </div>
+      </details>
+
+      <details>
+        <summary>The watch says “Check PIN”</summary>
+        <div>
+          <p>The PIN on the watch doesn’t match the one on the PC.</p>
+          <ol>
+            <li>On the PC, look at <strong>WATCH PIN</strong>. If it shows dots, click <strong>Show</strong>.</li>
+            <li>On the watch, tap the strip at the top (it says <strong>Set PIN</strong>) and type the number again, then tap <strong>OK</strong>.</li>
+          </ol>
+          <p>Still rejected after typing it carefully? On the PC, click <strong>New PIN</strong> and type the new number into the watch. That also resets a safety counter that can get out of step (for example if the watch’s clock was changed).</p>
+          <p>If someone typed the wrong PIN several times, the PC pauses for one minute. Wait a minute and try again.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>The PC says “Bluetooth problem”</summary>
+        <div>
+          <ul>
+            <li><strong>“No Bluetooth adapter found”:</strong> your PC has no Bluetooth. Plug in a USB Bluetooth adapter (look for one that says “Bluetooth 5” on the box).</li>
+            <li><strong>“…does not support the BLE peripheral role”:</strong> your Bluetooth adapter is too old or its driver is limited. Updating Windows and the Bluetooth driver sometimes fixes it. A newer USB Bluetooth 5 adapter almost always does.</li>
+            <li><strong>Anything else:</strong> turn Bluetooth off and on again in Windows settings, then quit and restart the PPT Remote app.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details>
+        <summary>It says Connected, but the slides don’t change</summary>
+        <div>
+          <ol>
+            <li><strong>Click on the slideshow once</strong> so it is the window in front. The remote “types” keys into whichever window is active.</li>
+            <li>In the PPT Remote window, check <strong>“Send keypresses to the active window”</strong> is ticked.</li>
+            <li>Use the <strong>Test: send Next in 3 seconds</strong> button, then click on your slideshow within 3 seconds. If the slide changes, the PC side works and the problem is on the watch side. If not, try the next point.</li>
+            <li>Is PowerPoint running <strong>as administrator</strong>? Windows blocks normal apps from typing into those. Close both, then right-click <span class="file">PptRemoteServer.exe</span> and choose <strong>Run as administrator</strong>.</li>
+            <li>Try the other key style: in the window, change <strong>Slide navigation keys</strong> to <strong>Page Up / Page Down</strong>.</li>
+          </ol>
+        </div>
+      </details>
+
+      <details>
+        <summary>It worked, then stopped after a while</summary>
+        <div>
+          <p>Most often the watch screen went to sleep and closed the app. Open <strong>PPT Remote</strong> on the watch again and it will reconnect by itself. For long talks, make the watch screen stay on longer (see “Tip for long talks” above). Your PC’s Bluetooth might also have been switched off by a power-saving setting, so check it’s still on.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Windows said “Windows protected your PC”</summary>
+        <div>
+          <p>That’s expected the first time. Click <strong>More info</strong>, then <strong>Run anyway</strong>. See <a href="#pc">Step 2</a> for why this happens.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>My antivirus deleted or blocked the file</summary>
+        <div>
+          <p>Antivirus programs are sometimes jumpy about new programs that press keys for you (which is exactly what this one does). Download it again and tell your antivirus to allow it. If you’d rather not, you can build it yourself from the source code on the project’s GitHub page.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>I copied the file but the app isn’t on my watch</summary>
+        <div>
+          <ol>
+            <li>Check the file went into the <strong>Apps</strong> folder inside <strong>GARMIN</strong> on the watch, not somewhere else.</li>
+            <li>The file must be called exactly <span class="file">PptRemote.prg</span>. If it was downloaded twice, it might be called <span class="file">PptRemote (1).prg</span>. Rename it.</li>
+            <li>Unplug the watch, wait a minute, and look again. Restarting the watch (hold the side button, then choose to power off and on) helps if it still doesn’t appear.</li>
+            <li>Make sure the watch really is a <strong>Venu Sq 2 Music</strong>. The app is built for that model only.</li>
+          </ol>
+        </div>
+      </details>
+
+      <details>
+        <summary>I forgot my PIN</summary>
+        <div>
+          <p>It’s in the PPT Remote window on your PC under <strong>WATCH PIN</strong>. If it shows dots, click <strong>Show</strong>.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>None of this helped</summary>
+        <div>
+          <p>Please <a href="https://github.com/TheRealDuckers/GarminPowerPointRemote/issues">open an issue on GitHub</a> and tell us: what the PC’s top bar says, what the top strip of the watch says, your Windows version, and what you’ve already tried. Copy a few lines from the <strong>ACTIVITY</strong> list at the bottom of the PC window if you can.</p>
+        </div>
+      </details>
+    </section>
+
+    <section id="privacy">
+      <h2>Is this safe?</h2>
+      <ul>
+        <li><strong>Nothing goes over the internet.</strong> The watch and the PC talk directly over Bluetooth, a short distance apart.</li>
+        <li><strong>The PIN protects your slides.</strong> The PC ignores any message that isn’t signed with your PIN, so a stranger’s phone or laptop can’t change your slides. The PC also locks out guessing for a minute after five wrong tries.</li>
+        <li><strong>No accounts, no tracking.</strong> The app doesn’t collect anything.</li>
+        <li><strong>What it can do:</strong> press a handful of keys (arrow keys, <kbd>F5</kbd>, <kbd>Esc</kbd>, <kbd>B</kbd>) on your PC. That’s all. And only while the app is running.</li>
+      </ul>
+      <div class="callout warn">
+        <p><strong>One honest limitation:</strong> the Bluetooth link itself isn’t encrypted. A short PIN is plenty to stop casual, passing devices. It wouldn’t stop a determined person standing nearby who is recording your Bluetooth traffic. If that worries you, click <strong>New PIN</strong> in the PC app and choose a <strong>12-digit</strong> PIN.</p>
+      </div>
+      <p>You can read every line of the code on the project’s <a href="https://github.com/TheRealDuckers/GarminPowerPointRemote">GitHub page</a>.</p>
+    </section>
+
+    <section id="remove">
+      <h2>How to remove it</h2>
+      <ol class="steps">
+        <li><strong>On the PC:</strong> right-click the tray icon and choose <strong>Quit</strong>. If you ticked <strong>Start with Windows</strong>, untick it first. Then delete the folder you extracted. That’s everything on the PC side.</li>
+        <li><strong>On the watch:</strong> plug it in, open <strong>GARMIN</strong> then <strong>Apps</strong>, and delete <span class="file">PptRemote.prg</span>. Unplug it.</li>
+      </ol>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>PPT Remote is a free, open-source project and isn’t affiliated with Garmin or Microsoft. “Garmin” and “Venu” are trademarks of Garmin Ltd.; “PowerPoint” and “Windows” are trademarks of Microsoft.</p>
+      <p><a href="https://github.com/TheRealDuckers/GarminPowerPointRemote">Source code on GitHub</a> · <a href="https://github.com/TheRealDuckers/GarminPowerPointRemote/releases/latest">Downloads</a> · <a href="https://github.com/TheRealDuckers/GarminPowerPointRemote/issues">Report a problem</a></p>
+    </div>
+  </footer>
+</body>
+</html>

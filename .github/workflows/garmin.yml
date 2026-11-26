@@ -1,0 +1,127 @@
+name: Build Garmin watch app (dev)
+
+# Builds a development copy of the watch app (PptRemote.prg) for the Venu Sq 2 Music.
+#
+# Garmin does not allow its SDK to be downloaded anonymously, so this needs a
+# one-time setup (see "How to enable this" below). Until that is done the job
+# SKIPS itself and says why, instead of failing.
+#
+# How to enable this (GitHub: Settings > Secrets and variables > Actions):
+#   Secrets:    GARMIN_USERNAME, GARMIN_PASSWORD   (a Garmin developer account login)
+#   Variables:  CONNECT_IQ_AGREEMENT_HASH          (run `connect-iq-sdk-manager agreement view`
+#                                                   on your own computer and copy the hash it prints)
+#   Optional:   CIQ_DEVELOPER_KEY (secret)         base64 of your developer_key.der; without it a
+#                                                   throwaway key is generated (fine for sideloading)
+#               CIQ_SDK_VERSION (variable)         SDK version or range, default ^6.2.2
+on:
+  push:
+    branches: [main, claude1]
+    paths:
+      - "garmin/**"
+      - ".github/workflows/garmin.yml"
+    tags: ["v*"]
+  pull_request:
+    paths:
+      - "garmin/**"
+      - ".github/workflows/garmin.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write   # only used to attach files to a release
+
+jobs:
+  build:
+    name: Build venusq2m
+    runs-on: ubuntu-latest
+    env:
+      GARMIN_USERNAME: ${{ secrets.GARMIN_USERNAME }}
+      GARMIN_PASSWORD: ${{ secrets.GARMIN_PASSWORD }}
+      CONNECT_IQ_AGREEMENT_HASH: ${{ vars.CONNECT_IQ_AGREEMENT_HASH }}
+      CIQ_SDK_VERSION: ${{ vars.CIQ_SDK_VERSION }}
+      CIQ_DEVELOPER_KEY: ${{ secrets.CIQ_DEVELOPER_KEY }}
+
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Check the Garmin login is set up
+        id: gate
+        run: |
+          if [ -n "$GARMIN_USERNAME" ] && [ -n "$GARMIN_PASSWORD" ] && [ -n "$CONNECT_IQ_AGREEMENT_HASH" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "## Garmin build skipped"
+              echo
+              echo "Garmin only lets logged-in developers download its SDK, so this workflow needs a one-time setup:"
+              echo
+              echo "1. Repo **Settings > Secrets and variables > Actions > Secrets**: add \`GARMIN_USERNAME\` and \`GARMIN_PASSWORD\`."
+              echo "2. On your own computer run \`connect-iq-sdk-manager agreement view\`, read the agreement, and copy the hash it prints."
+              echo "3. Same page, **Variables** tab: add \`CONNECT_IQ_AGREEMENT_HASH\` with that hash."
+              echo "4. Re-run this workflow."
+              echo
+              echo "Full steps: the Garmin README in this repo (garmin/README.md)."
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Garmin build skipped::Secrets or variables are missing. See the run summary."
+          fi
+
+      - name: Install Java
+        if: steps.gate.outputs.ready == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install the Connect IQ SDK manager
+        if: steps.gate.outputs.ready == 'true'
+        run: |
+          mkdir -p "$HOME/.local/bin"
+          curl -fsSL https://raw.githubusercontent.com/lindell/connect-iq-sdk-manager-cli/master/install.sh | sh -s -- -b "$HOME/.local/bin"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Accept the agreement, log in, download the SDK and device files
+        if: steps.gate.outputs.ready == 'true'
+        run: |
+          connect-iq-sdk-manager agreement accept --agreement-hash="$CONNECT_IQ_AGREEMENT_HASH"
+          connect-iq-sdk-manager login
+          connect-iq-sdk-manager sdk set "${CIQ_SDK_VERSION:-^6.2.2}"
+          echo "$(connect-iq-sdk-manager sdk current-path --bin)" >> "$GITHUB_PATH"
+          connect-iq-sdk-manager device download --manifest=garmin/manifest.xml
+
+      - name: Get a developer key
+        if: steps.gate.outputs.ready == 'true'
+        run: |
+          if [ -n "$CIQ_DEVELOPER_KEY" ]; then
+            echo "$CIQ_DEVELOPER_KEY" | base64 --decode > developer_key.der
+            echo "Using the developer key from the CIQ_DEVELOPER_KEY secret."
+          else
+            openssl genrsa -out developer_key.pem 4096
+            openssl pkcs8 -topk8 -inform PEM -outform DER -in developer_key.pem -out developer_key.der -nocrypt
+            echo "No CIQ_DEVELOPER_KEY secret: generated a throwaway key (fine for sideloading)."
+          fi
+
+      - name: Build the watch app (dev build)
+        if: steps.gate.outputs.ready == 'true'
+        run: |
+          monkeyc \
+            --device venusq2m \
+            --jungles garmin/monkey.jungle \
+            --private-key developer_key.der \
+            --warn \
+            --output PptRemote.prg
+          ls -l PptRemote.prg
+
+      - name: Keep the .prg (Actions > this run > Artifacts)
+        if: steps.gate.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: PptRemote-dev-prg
+          path: PptRemote.prg
+          if-no-files-found: error
+
+      - name: Attach to the GitHub Release (version tags only)
+        if: steps.gate.outputs.ready == 'true' && startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: PptRemote.prg
