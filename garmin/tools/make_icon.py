@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate garmin/resources/drawables/launcher_icon.png (36x36) using only the stdlib.
+"""Generate garmin/resources/drawables/launcher_icon.png (40x40) using only the stdlib.
 
 Run once from anywhere:  python garmin/tools/make_icon.py
 Replace the PNG with your own artwork whenever you like.
@@ -8,11 +8,11 @@ import os
 import struct
 import zlib
 
-SIZE = 36
+SIZE = 40
 BG = (31, 111, 235)
 FG = (255, 255, 255)
-RADIUS = 8.0
-TRI = ((13.0, 9.0), (13.0, 27.0), (28.0, 18.0))
+RADIUS = 9.0
+TRI = ((14.0, 10.0), (14.0, 30.0), (31.0, 20.0))
 
 
 def in_round_rect(x, y):

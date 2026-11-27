@@ -53,7 +53,7 @@ All text goes through `TextFit` (`source/Protocol.mc`), which measures it with `
 - The watch sends a signed heartbeat every 10 s so the PC can show whether it is still connected.
 - If the PC doesn't answer within 12 seconds of a connection attempt, the app gives up and searches again.
 - The button is handled in `onKey` rather than `onSelect`, because some touch watches never deliver `onSelect` for the button.
-- The launcher icon is 36x36, the size other published apps use for the Venu Sq 2 family. It is the one value I couldn't confirm from Garmin's own docs; if the compiler complains, resize `launcher_icon.png`.
+- The launcher icon is 40x40, the size the Connect IQ compiler reports for the `venusq2m`.
 
 ## Troubleshooting
 

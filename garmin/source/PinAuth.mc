@@ -9,7 +9,6 @@ using Toybox.Time;
 // HMAC-SHA256(key, command + counter)], where key = SHA-256("PPTRemote-v1:" + PIN).
 // The counter only ever goes up, which stops recorded packets being replayed.
 class PinAuth {
-    private var _pin = null;
     private var _key = null;
     private var _counter = 0;
 
@@ -77,14 +76,12 @@ class PinAuth {
             var hash = new Cryptography.Hash({:algorithm => Cryptography.HASH_SHA256});
             hash.update(toBytes(PIN_SALT + pin));
             _key = hash.digest();
-            _pin = pin;
         } catch (ex) {
             _key = null;
-            _pin = null;
         }
     }
 
-    private function toBytes(text) {
+    private function toBytes(text as String) {
         var chars = text.toUtf8Array();
         var bytes = new [chars.size()]b;
         for (var i = 0; i < chars.size(); i += 1) {

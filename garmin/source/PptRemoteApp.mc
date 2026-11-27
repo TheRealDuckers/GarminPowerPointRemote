@@ -36,7 +36,7 @@ class PptRemoteApp extends Application.AppBase {
         }
     }
 
-    function onTick() {
+    function onTick() as Void {
         var now = System.getTimer();
         if (ble != null) {
             ble.tick(now);

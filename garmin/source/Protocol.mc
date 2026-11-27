@@ -58,7 +58,7 @@ module Layout {
 // Keeps text inside its box: tries each font (largest first), then truncates with "...".
 module TextFit {
     // Returns [font, text].
-    function fit(dc, text, fonts, maxW) {
+    function fit(dc, text, fonts as Array, maxW) as Array {
         for (var i = 0; i < fonts.size(); i += 1) {
             if (dc.getTextWidthInPixels(text, fonts[i]) <= maxW) {
                 return [fonts[i], text];
@@ -72,7 +72,7 @@ module TextFit {
         return [font, s + "..."];
     }
 
-    function draw(dc, x, y, text, fonts, maxW, justify) {
+    function draw(dc, x, y, text, fonts as Array, maxW, justify) {
         var f = fit(dc, text, fonts, maxW);
         dc.drawText(x, y, f[0], f[1], justify);
     }
