@@ -150,7 +150,7 @@ internal sealed class GattServer
             {
                 Report(ServerState.Starting, "Advertising stopped; restarting...");
             }
-            await Task.Delay(2000);
+            await Task.Delay(2000).Wait(); if (_stopping) return;;
             if (!_stopping)
             {
                 StartAdvertising();
