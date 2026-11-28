@@ -12,7 +12,10 @@ name: Build Garmin watch app (dev)
 #                                                   on your own computer and copy the hash it prints)
 #   Optional:   CIQ_DEVELOPER_KEY (secret)         base64 of your developer_key.der; without it a
 #                                                   throwaway key is generated (fine for sideloading)
-#               CIQ_SDK_VERSION (variable)         SDK version or range, default >6.2.2
+#               WATCH_PART_NUMBER (variable)       the Part-Number from your watch's CIQ_LOG.YML, default 006-B3599-00
+#               CIQ_SDK_VERSION (variable)         SDK version or range, default >=7.4.3
+#                                                   (newer watch firmware rejects apps built with older SDKs:
+#                                                   the watch log says "Signature check failed on file")
 on:
   push:
     branches: [main, claude1]
@@ -86,8 +89,45 @@ jobs:
           connect-iq-sdk-manager agreement accept --agreement-hash="$CONNECT_IQ_AGREEMENT_HASH"
           connect-iq-sdk-manager login
           connect-iq-sdk-manager sdk set "${CIQ_SDK_VERSION:->=7.4.3}"
+
+          SDK_PATH="$(connect-iq-sdk-manager sdk current-path)"
+          echo "SDK in use: $SDK_PATH"
+          SDK_VERSION="$(echo "$SDK_PATH" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || true)"
+          echo "SDK_VERSION=${SDK_VERSION:-unknown}" >> "$GITHUB_ENV"
+          echo "### Built with Connect IQ SDK ${SDK_VERSION:-unknown}" >> "$GITHUB_STEP_SUMMARY"
+
+          # Current watch firmware refuses sideloaded apps built with an SDK older than 7.4.3
+          # (the watch's CIQ_LOG.YML says "Signature check failed on file"). Fail loudly
+          # instead of producing a .prg that will not load.
+          if [ -n "$SDK_VERSION" ] && [ "$(printf '%s\n7.4.3\n' "$SDK_VERSION" | sort -V | head -1)" != "7.4.3" ]; then
+            echo "::error title=SDK too old::SDK $SDK_VERSION is older than 7.4.3, so current watch firmware will reject the app. Set the CIQ_SDK_VERSION variable to >=7.4.3."
+            exit 1
+          fi
+
           echo "$(connect-iq-sdk-manager sdk current-path --bin)" >> "$GITHUB_PATH"
           connect-iq-sdk-manager device download --manifest=garmin/manifest.xml
+
+      - name: Check the watch model (info only, never fails the build)
+        if: steps.gate.outputs.ready == 'true'
+        env:
+          WATCH_PART_NUMBER: ${{ vars.WATCH_PART_NUMBER || '006-B3599-00' }}
+        run: |
+          DEVICE_JSON="$(find "$HOME/.Garmin" -type f -name compiler.json -path '*venusq2m*' 2>/dev/null | head -1 || true)"
+          {
+            echo "### Watch model check"
+            if [ -z "$DEVICE_JSON" ]; then
+              echo "Could not find the downloaded venusq2m device file, so the part number could not be checked."
+            elif grep -q "$WATCH_PART_NUMBER" "$DEVICE_JSON"; then
+              echo "Part number \`$WATCH_PART_NUMBER\` (from your watch's log) **is listed** for \`venusq2m\`, so the build matches your watch."
+            else
+              echo "Part number \`$WATCH_PART_NUMBER\` (from your watch's log) is **not listed** for \`venusq2m\`."
+              echo "Your watch may be a different model (for example the plain Venu Sq 2), or Garmin's device file may not list part numbers."
+              echo
+              echo "Part numbers in the venusq2m device file:"
+              grep -oE '[0-9]{3}-B[0-9]{4}-[0-9]{2}' "$DEVICE_JSON" | sort -u | sed 's/^/- /' || true
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+          cat "$GITHUB_STEP_SUMMARY" | tail -12
 
       - name: Get a developer key
         if: steps.gate.outputs.ready == 'true'
@@ -116,7 +156,7 @@ jobs:
         if: steps.gate.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: PptRemote-dev-prg
+          name: PptRemote-dev-prg-sdk-${{ env.SDK_VERSION }}
           path: PptRemote.prg
           if-no-files-found: error
 
