@@ -81,7 +81,7 @@ class PinAuth {
         }
     }
 
-    private function toBytes(text as String) {
+    private function toBytes(text as Lang.String) {
         var chars = text.toUtf8Array();
         var bytes = new [chars.size()]b;
         for (var i = 0; i < chars.size(); i += 1) {

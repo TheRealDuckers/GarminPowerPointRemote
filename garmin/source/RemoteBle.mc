@@ -22,7 +22,7 @@ class RemoteBle extends BluetoothLowEnergy.BleDelegate {
     private var _profileReady = false;
     private var _writeBusy = false;
     private var _writeStartedAt = 0;
-    private var _queue as Array<Number> = [];
+    private var _queue as Lang.Array<Lang.Number> = [];
     private var _retryAt = null;
     private var _timeoutAt = null;
     private var _nextHeartbeatAt = 0;
