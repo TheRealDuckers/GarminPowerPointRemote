@@ -32,6 +32,7 @@ internal sealed class GattServer
     private GattSession? _session;
     private string? _sessionId;
     private volatile bool _stopping;
+    private int _restartInProgress;
     private System.Threading.Timer? _watchdog;
     private long _lastSeenTicks;
     private long _lastRejectTicks;
@@ -121,7 +122,7 @@ internal sealed class GattServer
         Report(ServerState.Stopped, "Stopped");
     }
 
-    private async Task StartAdvertising()
+    private void StartAdvertising()
     {
         _provider?.StartAdvertising(new GattServiceProviderAdvertisingParameters
         {
@@ -150,10 +151,31 @@ internal sealed class GattServer
             {
                 Report(ServerState.Starting, "Advertising stopped; restarting...");
             }
-            await Task.Delay(2000).Wait(); if (_stopping) return;;
-            if (!_stopping)
+            if (Interlocked.CompareExchange(ref _restartInProgress, 1, 0) != 0)
             {
-                StartAdvertising();
+                return;
+            }
+
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(2));
+                if (_stopping)
+                {
+                    return;
+                }
+
+                try
+                {
+                    StartAdvertising();
+                }
+                catch (Exception ex)
+                {
+                    Report(ServerState.Error, $"Could not restart Bluetooth advertising: {ex.Message}");
+                }
+            }
+            finally
+            {
+                Interlocked.Exchange(ref _restartInProgress, 0);
             }
         }
         else if (status != GattServiceProviderAdvertisementStatus.Created)
