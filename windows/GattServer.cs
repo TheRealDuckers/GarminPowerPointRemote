@@ -121,7 +121,7 @@ internal sealed class GattServer
         Report(ServerState.Stopped, "Stopped");
     }
 
-    private void StartAdvertising()
+    private async Task StartAdvertising()
     {
         _provider?.StartAdvertising(new GattServiceProviderAdvertisingParameters
         {
